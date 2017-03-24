@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,10 +23,27 @@ import sean.com.gankio.http.Client;
 import sean.com.gankio.http.HttpHolder;
 import sean.com.gankio.http.service.IServiceType;
 import sean.com.gankio.http.service.RequestParam;
+import sean.com.gankio.ui.fragment.AndroidFragment;
+import sean.com.gankio.ui.fragment.AppFragment;
+import sean.com.gankio.ui.fragment.ExpansionFragment;
+import sean.com.gankio.ui.fragment.ForeEndFragment;
+import sean.com.gankio.ui.fragment.IosFragment;
+import sean.com.gankio.ui.fragment.RestVideoFragment;
+import sean.com.gankio.ui.fragment.WealFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private static final int FRAGMENT_WEAL = 0X01;
+    private static final int FRAGMENT_ANDROID = 0X02;
+    private static final int FRAGMENT_IOS = 0X03;
+    private static final int FRAGMENT_APP = 0X04;
+    private static final int FRAGMENT_REST_VIDEO = 0X05;
+    private static final int FRAGMENT_EXPANSION = 0X06;
+    private static final int FRAGMENT_FORE_END = 0X07;
+
+
 
     @BindView(R.id.common_title_tv)
     TextView commonTitleTv;
@@ -36,7 +54,18 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.activity_main)
     DrawerLayout activityMain;
 
+    private WealFragment wealFragment;
+    private AndroidFragment androidFragment;
+    private IosFragment iosFragment;
+    private AppFragment appFragment;
+    private RestVideoFragment restVideoFragment;
+    private ExpansionFragment expansionFragment;
+    private ForeEndFragment foreEndFragment;
+
+
     private Context context;
+    final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +84,15 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             commonTitleTb.setNavigationIcon(R.mipmap.ic_menu_white_24dp);
         }
+        wealFragment = new WealFragment();
+        transaction.add(R.id.content_fl,wealFragment);
+        transaction.commitNowAllowingStateLoss();
+
+    }
 
 
+    private void setTitleThis(int res){
+        commonTitleTv.setText(res);
     }
 
     @Override
@@ -79,15 +115,26 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigationView() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.weal);
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                hideAllFragment(transaction);
                 switch (item.getItemId()) {
                     case R.id.weal:
-                        getWeal();
+                        setTitleThis(R.string.weal_string);
+                        if (wealFragment == null){
+                            wealFragment = new WealFragment();
+                            transaction.add(R.id.content_fl,wealFragment);
+                        }else {
+                            transaction.show(wealFragment);
+                        }
+
+//                        getWeal();
                         break;
                     case R.id.android:
-                        getAndroid();
+//                        getAndroid();
+                        getWeal();
                         break;
                     case R.id.ios:
                         getIos();
@@ -96,10 +143,17 @@ public class MainActivity extends AppCompatActivity {
                         getAll();
                         break;
                 }
+                transaction.commitNowAllowingStateLoss();
                 activityMain.closeDrawers();
                 return true;
             }
         });
+    }
+
+    private void hideAllFragment(FragmentTransaction transaction) {
+        if (wealFragment != null && !wealFragment.isHidden()){
+            transaction.hide(wealFragment);
+        }
     }
 
 
