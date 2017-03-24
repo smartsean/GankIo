@@ -2,24 +2,38 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_call"
+            android:id="@+id/weal"
             android:icon="@drawable/ic_share_white_24dp"
-            android:title="Call" />
+            android:title="@string/weal_text" />
         <item
-            android:id="@+id/nav_friends"
+            android:id="@+id/android"
             android:icon="@drawable/ic_share_white_24dp"
-            android:title="Friends" />
+            android:title="@string/android_text" />
         <item
-            android:id="@+id/nav_location"
+            android:id="@+id/ios"
             android:icon="@drawable/ic_share_white_24dp"
-            android:title="Location" />
+            android:title="@string/ios" />
         <item
-            android:id="@+id/nav_mail"
+            android:id="@+id/all"
             android:icon="@drawable/ic_share_white_24dp"
-            android:title="Mail" />
+            android:title="@string/all_text" />
         <item
-            android:id="@+id/nav_task"
+            android:id="@+id/rest_video"
             android:icon="@drawable/ic_share_white_24dp"
-            android:title="Tasks" />
+            android:title="休息视频" />
+        <item
+            android:id="@+id/expansion_resources"
+            android:icon="@drawable/ic_share_white_24dp"
+            android:title="扩展资源" />
+        <item
+            android:id="@+id/app"
+            android:icon="@drawable/ic_share_white_24dp"
+            android:title="App" />
+
+        <item
+            android:id="@+id/fore_end"
+            android:icon="@drawable/ic_share_white_24dp"
+            android:title="前端" />
+
     </group>
 </menu>

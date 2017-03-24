@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/share"
-        android:icon="@drawable/ic_share_white_24dp"
+        android:icon="@mipmap/ic_share_white_24dp"
         android:title="Share"
         app:showAsAction="always" />
     <item
         android:id="@+id/turned"
-        android:icon="@drawable/ic_turned_in_not_white_24dp"
+        android:icon="@mipmap/ic_turned_in_not_white_24dp"
         android:title="Turned"
         app:showAsAction="always" />
     <item
         android:id="@+id/more"
-        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:icon="@mipmap/ic_more_vert_white_24dp"
         android:title="More"
         app:showAsAction="never" />
 </menu>
