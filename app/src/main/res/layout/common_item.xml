@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:elevation="10dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:padding="4dp"
+            android:src="@drawable/i"
+            android:scaleType="centerCrop"
+            android:id="@+id/images_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <RelativeLayout
+       android:layout_margin="12dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <TextView
+           android:text="作者未知"
+           android:textSize="16dp"
+           android:textColor="#000000"
+           android:id="@+id/author_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+       <TextView
+           android:text="2017-12-12"
+           android:layout_marginRight="8dp"
+           android:layout_alignParentRight="true"
+           android:id="@+id/publish_time_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+       <TextView
+           android:id="@+id/desc_tv"
+           android:layout_marginRight="8dp"
+           android:text="可能是最优雅的切换布局的方法[android控件]"
+           android:layout_marginTop="12dp"
+           android:layout_below="@+id/author_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+   </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

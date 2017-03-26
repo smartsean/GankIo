@@ -1,21 +1,22 @@
 package sean.com.gankio.adapter;
 
 /**
- * Created by Sean on 17/3/24.
+ * Created by Sean on 17/3/25.
  */
 
-public class WealModel {
+public class GankIoModel {
 
     /**
-     * _id : 58d49bad421aa93abf5d3b76
-     * createdAt : 2017-03-24T12:08:13.590Z
-     * desc : 3-24
-     * publishedAt : 2017-03-24T12:12:34.753Z
-     * source : chrome
-     * type : 福利
-     * url : http://7xi8d6.com1.z0.glb.clouddn.com/2017-03-24-17438359_1470934682925012_1066984844010979328_n.jpg
+     * _id : 58cca37b421aa95810795c86
+     * createdAt : 2017-03-18T11:03:23.757Z
+     * desc : Android TensorFlow MachineLearning Example (Building TensorFlow for Android)
+     * images : ["http://img.gank.io/75f15c11-3fc0-4426-ac3b-d91352d3afd0","http://img.gank.io/76ef2be4-e495-4f72-9809-334d288ebfda"]
+     * publishedAt : 2017-03-21T12:19:46.895Z
+     * source : web
+     * type : Android
+     * url : https://github.com/MindorksOpenSource/AndroidTensorFlowMachineLearningExample
      * used : true
-     * who : dmj
+     * who : AMIT SHEKHAR
      */
 
     private String _id;
@@ -27,6 +28,7 @@ public class WealModel {
     private String url;
     private boolean used;
     private String who;
+    private String images;//这里只取第一个图片的地址
 
     public String get_id() {
         return _id;
@@ -98,5 +100,13 @@ public class WealModel {
 
     public void setWho(String who) {
         this.who = who;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 }

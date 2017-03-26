@@ -25,11 +25,19 @@ import static android.content.ContentValues.TAG;
 
 public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
     private Context context;
-    private List<WealModel> wealModels;
+    private List<GankIoModel> gankIoModels;
 
-    public WealAdapter(Context context, List<WealModel> wealModels) {
+    public List<GankIoModel> getGankIoModels() {
+        return gankIoModels;
+    }
+
+    public void addGankIoModels(List<GankIoModel> gankIoModels) {
+        this.gankIoModels.addAll(gankIoModels);
+    }
+
+    public WealAdapter(Context context, List<GankIoModel> gankIoModels) {
         this.context = context;
-        this.wealModels = wealModels;
+        this.gankIoModels = gankIoModels;
     }
 
 
@@ -42,7 +50,7 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final WealModel bean = wealModels.get(position);
+        final GankIoModel bean = gankIoModels.get(position);
         Log.d(TAG, "onBindViewHolder: "+bean.getUrl());
         Glide.with(context).load(bean.getUrl())
                 .into(holder.wealIv);
@@ -56,8 +64,8 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return (wealModels != null && !wealModels.isEmpty()) ?
-                wealModels.size() : 0;
+        return (gankIoModels != null && !gankIoModels.isEmpty()) ?
+                gankIoModels.size() : 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

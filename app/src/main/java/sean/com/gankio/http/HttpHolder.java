@@ -11,7 +11,6 @@ import com.zhj.syringe.core.service.BaseServiceManager;
 
 public class HttpHolder extends BaseHttpHolder {
 
-    public Context context;
 
     public HttpHolder(BaseServiceManager baseServiceManager) {
         super(baseServiceManager);
@@ -27,12 +26,14 @@ public class HttpHolder extends BaseHttpHolder {
 
         @Override
         public void post() {
-//            if (NetworkUtil.isConnectInternet(context)) {
-//
+//            if (!NetUtils.getInstance(context).isConnected(context)) {
+//                return;
+//                Log.d(TAG, "post: ");
 //                Toast.makeText(context, "網絡不可用", Toast.LENGTH_SHORT).show();
+//            }else {
+                super.post();
 //            }
 
-            super.post();
         }
     }
 }

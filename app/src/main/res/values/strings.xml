@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">干货</string>
     <string name="weal_string">福利</string>
-    <string name="weal_text">福利</string>
     <string name="android_text">Android</string>
     <string name="ios">Ios</string>
     <string name="all_text">全部</string>
+    <string name="expand_text">扩展资源</string>
+    <string name="rest_video_text">休息视频</string>
+    <string name="fore_end_text">前端</string>
+    <string name="app_text">APP</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
