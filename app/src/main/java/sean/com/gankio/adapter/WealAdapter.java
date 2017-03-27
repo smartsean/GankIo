@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sean.com.gankio.R;
@@ -26,6 +27,8 @@ import static android.content.ContentValues.TAG;
 public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
     private Context context;
     private List<GankIoModel> gankIoModels;
+    private List<Integer> mHeights;
+
 
     public List<GankIoModel> getGankIoModels() {
         return gankIoModels;
@@ -41,6 +44,16 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
     }
 
 
+    public void getRandomHeight(List<GankIoModel> mList) {
+        mHeights = new ArrayList<>();
+        for (int i = 0; i < mList.size(); i++) {
+            //随机的获取一个范围为200-600直接的高度
+            mHeights.add((int) (900 ));
+//            mHeights.add((int)(300+400));
+        }
+    }
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.weal_item, parent, false);
@@ -50,14 +63,19 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        layoutParams.height = mHeights.get(position);
+        holder.itemView.setLayoutParams(layoutParams);
+
         final GankIoModel bean = gankIoModels.get(position);
-        Log.d(TAG, "onBindViewHolder: "+bean.getUrl());
+        Log.d(TAG, "onBindViewHolder: " + bean.getUrl());
         Glide.with(context).load(bean.getUrl())
                 .into(holder.wealIv);
         holder.wealCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, PhotoDetailActivity.class).putExtra("url",bean.getUrl()));
+                context.startActivity(new Intent(context, PhotoDetailActivity.class).putExtra("url", bean.getUrl()));
             }
         });
     }

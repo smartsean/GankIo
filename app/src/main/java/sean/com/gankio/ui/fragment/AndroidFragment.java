@@ -144,9 +144,7 @@ public class AndroidFragment extends BaseSupportFragment {
                                 }
                                 List<GankIoModel> gankIoModels =
                                         GankController.getInstance().
-                                                getGankIoModels(httpBean.
-                                                        getMessage().
-                                                        toString());
+                                                getGankIoModels(httpBean.getMessage().toString());
                                 refreshAndroidList(gankIoModels);
                             }
                         }).build())

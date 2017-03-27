@@ -45,24 +45,40 @@ public class MainActivity extends AppCompatActivity {
 
     private WealFragment wealFragment;
     private AndroidFragment androidFragment;
+    private AndroidFragment iosFragment;
+    private AndroidFragment restVideoFragment;
 
 
     private Context context;
-    FragmentManager fragmentManager = getSupportFragmentManager();
-//    FragmentTransaction transaction;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        fragmentManager = getSupportFragmentManager();
         context = this;
         initNavigationView();
         init();
+        firstInShowWealFragment();
+    }
+
+    /**
+     * 首次进入显示福利Fragment
+     */
+    private void firstInShowWealFragment() {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        wealFragment = new WealFragment();
+        transaction.add(R.id.content_fl, wealFragment);
+        transaction.commit();
+
     }
 
 
-    // 初始化initNavigationView
+    /**
+     * 初始化initNavigationView
+     */
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -71,40 +87,30 @@ public class MainActivity extends AppCompatActivity {
                 hideAllFragment(transaction);
                 switch (item.getItemId()) {
                     case weal:
-                        changeToWeal(transaction);
+                        changeToWeal(transaction, R.string.weal_string);
                         break;
                     case R.id.android:
-                        setTitleThis(R.string.android_text);
-                        androidFragment = AndroidFragment.newInstance(AndroidFragment.ANDROID_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToCommon(transaction, R.string.android_text, AndroidFragment.ANDROID_KEY);
                         break;
                     case R.id.ios:
-                        setTitleThis(R.string.ios);
-                        androidFragment= AndroidFragment.newInstance(AndroidFragment.IOS_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToIos(transaction, R.string.ios, AndroidFragment.IOS_KEY);
+//                        changeToCommon(transaction, R.string.ios, AndroidFragment.IOS_KEY);
                         break;
                     case R.id.rest_video:
-                        setTitleThis(R.string.rest_video_text);
-                        androidFragment = AndroidFragment.newInstance(AndroidFragment.REST_VIDEO_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToRestVideo(transaction, R.string.rest_video_text, AndroidFragment.REST_VIDEO_KEY);
+//                        changeToCommon(transaction, R.string.rest_video_text, AndroidFragment.REST_VIDEO_KEY);
                         break;
                     case R.id.expansion_resources:
-                        setTitleThis(R.string.expand_text);
-                        androidFragment = AndroidFragment.newInstance(AndroidFragment.EXPANSION_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToCommon(transaction, R.string.expand_text, AndroidFragment.EXPANSION_KEY);
                         break;
                     case R.id.app:
-                        setTitleThis(R.string.app_text);
-                        androidFragment = AndroidFragment.newInstance(AndroidFragment.APP_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToCommon(transaction, R.string.app_text, AndroidFragment.APP_KEY);
                         break;
                     case R.id.fore_end:
-                        setTitleThis(R.string.expand_text);
-                        androidFragment = AndroidFragment.newInstance(AndroidFragment.FORE_END_KEY);
-                        transaction.add(R.id.content_fl,androidFragment);
+                        changeToCommon(transaction, R.string.expand_text, AndroidFragment.FORE_END_KEY);
                         break;
                 }
-                transaction.commitAllowingStateLoss();
+                transaction.commit();
                 activityMain.closeDrawers();
                 return true;
             }
@@ -112,8 +118,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void changeToWeal(FragmentTransaction transaction) {
-        setTitleThis(R.string.weal_string);
+    /**
+     * 这个是单一的Fragment，可以不用每次都新建
+     *
+     * @param transaction
+     * @param type
+     */
+    private void changeToWeal(FragmentTransaction transaction, int type) {
+        setTitleThis(type);
         if (wealFragment == null) {
             wealFragment = new WealFragment();
             if (!wealFragment.isAdded()) {
@@ -124,6 +136,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 这个是单一的Fragment，可以不用每次都新建
+     *
+     * @param transaction
+     * @param type
+     */
+    private void changeToIos(FragmentTransaction transaction, int type, int showType) {
+        setTitleThis(type);
+        if (iosFragment == null) {
+            iosFragment = AndroidFragment.newInstance(showType);
+            if (!iosFragment.isAdded()) {
+                transaction.add(R.id.content_fl, iosFragment);
+            }
+        } else {
+            transaction.show(iosFragment);
+        }
+    }
+
+    /**
+     * 这个是单一的Fragment，可以不用每次都新建
+     *
+     * @param transaction
+     * @param type
+     */
+    private void changeToRestVideo(FragmentTransaction transaction, int type, int showType) {
+        setTitleThis(type);
+        if (restVideoFragment == null) {
+            restVideoFragment = AndroidFragment.newInstance(showType);
+            if (!restVideoFragment.isAdded()) {
+                transaction.add(R.id.content_fl, restVideoFragment);
+            }
+        } else {
+            transaction.show(restVideoFragment);
+        }
+    }
+
+    /**
+     * 这个是公共的Fragment，需要根据每次的类型获取
+     *
+     * @param transaction
+     * @param type
+     * @param showType
+     */
+    private void changeToCommon(FragmentTransaction transaction, int type, int showType) {
+        setTitleThis(type);
+        androidFragment = AndroidFragment.newInstance(showType);
+        transaction.add(R.id.content_fl, androidFragment);
+    }
 
     private void hideAllFragment(FragmentTransaction transaction) {
         if (wealFragment != null && !wealFragment.isHidden()) {
@@ -132,8 +192,13 @@ public class MainActivity extends AppCompatActivity {
         if (androidFragment != null && !androidFragment.isHidden()) {
             transaction.hide(androidFragment);
         }
+        if (iosFragment != null && !iosFragment.isHidden()) {
+            transaction.hide(iosFragment);
+        }
+        if (restVideoFragment != null && !restVideoFragment.isHidden()) {
+            transaction.hide(restVideoFragment);
+        }
     }
-
 
     private void init() {
         setSupportActionBar(commonTitleTb);
