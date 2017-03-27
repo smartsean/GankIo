@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.zhj.syringe.core.response.BaseHttpSubscriber;
 import com.zhj.syringe.core.response.HttpBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,7 +44,7 @@ public class WealFragment extends BaseSupportFragment {
     private static final int PRELOAD_SIZE = 6;
     private boolean mIsFirstTimeTouchBottom = true;
     private int page = 1;
-    private StaggeredGridLayoutManager sglm;
+    private List<GankIoModel> gankIoModels;
 
 
     @Override
@@ -53,14 +54,16 @@ public class WealFragment extends BaseSupportFragment {
         unbinder = ButterKnife.bind(this, view);
         context = getActivity();
         initView();
+        gankIoModels = new ArrayList<>();
+        StaggeredGridLayoutManager sglm;
+        sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        wealAdapter = new WealAdapter(context, gankIoModels);
+        wealRv.setLayoutManager(sglm);
+        wealRv.setAdapter(wealAdapter);
+        wealRv.addOnScrollListener(getOnBottomListener(sglm));
+
         getWealData(page);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        Log.d(TAG, "onResume: ");
-        super.onResume();
     }
 
     private void initView() {
@@ -69,7 +72,8 @@ public class WealFragment extends BaseSupportFragment {
             @Override
             public void onRefresh() {
                 page = 1;
-                wealAdapter = null;
+                gankIoModels.clear();
+                Log.d(TAG, "onRefresh: ");
                 getWealData(page);
             }
         });
@@ -78,13 +82,12 @@ public class WealFragment extends BaseSupportFragment {
     /**
      * 获取数据
      */
-    private void getWealData(int page) {
-        wealSrl.setRefreshing(true);
+    private void getWealData(final int page) {
         new HttpHolder.PostBuilder(Client.getInstance()
                 .getHttpHolder(), context)
                 .addRequest(RequestParam.newBuilder()
                         .path("type", "福利")
-                        .path("count", "40")
+                        .path("count", "10")
                         .path("page", String.valueOf(page))
                         .service(IServiceType.CLASS).callGankIo()
                         .subscriber(new BaseHttpSubscriber() {
@@ -93,11 +96,13 @@ public class WealFragment extends BaseSupportFragment {
                                 if (wealSrl.isRefreshing()) {
                                     wealSrl.setRefreshing(false);
                                 }
-                                List<GankIoModel> gankIoModels =
+                                Log.d(TAG, "onNext: " + page);
+                                gankIoModels =
                                         GankController.getInstance().
                                                 getGankIoModels(httpBean.
                                                         getMessage().
                                                         toString());
+                                Log.d(TAG, "onNext: "+gankIoModels.toString());
                                 refreshWealList(gankIoModels);
                             }
                         }).build())
@@ -109,14 +114,17 @@ public class WealFragment extends BaseSupportFragment {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView rv, int dx, int dy) {
+                Log.d(TAG, "onScrolled: ");
                 boolean isBottom = layoutManager.findLastCompletelyVisibleItemPositions(new int[2])[1] >=
                         wealAdapter.getItemCount() - PRELOAD_SIZE;
                 if (!wealSrl.isRefreshing() && isBottom) {
                     if (!mIsFirstTimeTouchBottom) {
-                        wealSrl.setRefreshing(true);
                         page += 1;
+                        Log.d(TAG, "onScrolled: 22");
+                        wealSrl.setRefreshing(true);
                         getWealData(page);
                     } else {
+                        Log.d(TAG, "onScrolled: 333");
                         mIsFirstTimeTouchBottom = false;
                     }
                 }
@@ -133,18 +141,8 @@ public class WealFragment extends BaseSupportFragment {
         if (gankIoModels == null) {
             return;
         }
-        sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        if (null == wealAdapter) {
-            wealRv.setLayoutManager(sglm);
-            wealAdapter = new WealAdapter(context, gankIoModels);
-            wealAdapter.getRandomHeight(gankIoModels);
-            wealRv.setAdapter(wealAdapter);
-        } else {
-            wealAdapter.getRandomHeight(gankIoModels);
-            wealAdapter.addGankIoModels(gankIoModels);
-            wealAdapter.notifyDataSetChanged();
-        }
-        wealRv.addOnScrollListener(getOnBottomListener(sglm));
+        wealAdapter.addGankIoModels(gankIoModels);
+        wealAdapter.notifyDataSetChanged();
     }
 
     @Override

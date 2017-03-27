@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_photo_detail"
+    android:id="@+id/activity_web_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="sean.com.gankio.ui.activity.WebViewActivity">
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/image_detail_pv"
+    <WebView
+        android:id="@+id/web_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/i"/>
+        android:layout_height="match_parent"/>
+
     <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/image_loading_animation"
+        android:id="@+id/web_view_loading_animation"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:indicatorName="BallScaleMultipleIndicator"
+        app:indicatorName="BallSpinFadeLoaderIndicator"
         app:indicatorColor="@color/colorPrimary"
         />
 

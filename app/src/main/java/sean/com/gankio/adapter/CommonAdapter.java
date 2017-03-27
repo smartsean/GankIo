@@ -17,6 +17,7 @@ import java.util.List;
 
 import sean.com.gankio.R;
 import sean.com.gankio.ui.activity.PhotoDetailActivity;
+import sean.com.gankio.ui.activity.WebViewActivity;
 
 /**
  * Created by Sean on 17/3/25.
@@ -68,13 +69,15 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                context.startActivity(new WebViewActivity());
+                context.startActivity(new Intent(context, WebViewActivity.class)
+                        .putExtra("title", bean.getDesc())
+                        .putExtra("url", bean.getUrl()));
             }
         });
         holder.imagesIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, PhotoDetailActivity.class).putExtra("url",bean.getImages()));
+                context.startActivity(new Intent(context, PhotoDetailActivity.class).putExtra("url", bean.getImages()));
             }
         });
     }

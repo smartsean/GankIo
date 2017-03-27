@@ -12,27 +12,19 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class BaseAtivity extends AppCompatActivity {
 
-    @BindView(R.id.common_title_tv)
     TextView commonTitleTv;
-    @BindView(R.id.common_title_tb)
     Toolbar commonTitleTb;
-    @BindView(R.id.content)
     RelativeLayout content;
-
-
-    private Context context;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_ativity);
-        ButterKnife.bind(this);
+        commonTitleTv = (TextView) findViewById(R.id.common_title_tv);
+        commonTitleTb = (Toolbar) findViewById(R.id.common_title_tb);
+        content = (RelativeLayout) findViewById(R.id.content);
         initToolBar();
     }
 
@@ -41,6 +33,9 @@ public class BaseAtivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
+    public TextView getCommonTitle(){
+        return commonTitleTv;
+    }
 
     /**
      * 子类调用，重新设置Toolbar
