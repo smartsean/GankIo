@@ -29,6 +29,7 @@ public class GankIoModel {
     private boolean used;
     private String who;
     private String images;//这里只取第一个图片的地址
+    private int blankLines;
 
     public String get_id() {
         return _id;
@@ -108,5 +109,13 @@ public class GankIoModel {
 
     public void setImages(String images) {
         this.images = images;
+    }
+
+    public int getBlankLines() {
+        return blankLines;
+    }
+
+    public void setBlankLines(int blankLines) {
+        this.blankLines = blankLines;
     }
 }

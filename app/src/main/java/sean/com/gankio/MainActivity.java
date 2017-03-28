@@ -1,6 +1,7 @@
 package sean.com.gankio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -61,18 +62,19 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         initNavigationView();
         init();
-        firstInShowWealFragment();
+        firstInShowWealFragment(savedInstanceState);
     }
 
     /**
      * 首次进入显示福利Fragment
      */
-    private void firstInShowWealFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        wealFragment = new WealFragment();
-        transaction.add(R.id.content_fl, wealFragment);
-        transaction.commit();
-
+    private void firstInShowWealFragment(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            wealFragment = new WealFragment();
+            transaction.add(R.id.content_fl, wealFragment);
+            transaction.commit();
+        }
     }
 
 
@@ -225,6 +227,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 activityMain.openDrawer(GravityCompat.START);
+                break;
+            case R.id.change_style_item:
+                startActivity(new Intent(context, Main2Activity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -29,7 +29,7 @@ public class GankController {
 
 
     public List<GankIoModel> getGankIoModels(String string) {
-        Log.d("getGankIoModels", "getGankIoModels: "+string);
+        Log.d("getGankIoModels", "getGankIoModels: " + string);
         List<GankIoModel> gankIoModels = new ArrayList<>();
         JSONObject object = JSON.parseObject(string);
         if (object.getBoolean("error")) {
@@ -48,13 +48,12 @@ public class GankController {
             gankIoModel.setDesc(gankIoObj.getString("desc"));
             gankIoModel.setType(gankIoObj.getString("type"));
             if (gankIoObj.getString("images") != null) {
-//                String[] imageArr = gankIoObj.getString("images").split(",");
                 JSONArray jsonArray = JSON.parseArray(gankIoObj.getString("images"));
                 gankIoModel.setImages(jsonArray.get(0).toString());
-//                gankIoModel.setImages(imageArr[0]);
-                Log.d("getGankIoModels", "getGankIoModels: "+gankIoModel.getImages());
             }
-//            Log.d("getGankIoModels", "image: "+gankIoModel.getImages());
+            if (gankIoModel.getType().equals("福利")) {
+                gankIoModel.setBlankLines((int) (Math.random() * 10) % 3);
+            }
             gankIoModel.setUsed(gankIoObj.getBoolean("used"));
             gankIoModel.setWho(gankIoObj.getString("who"));
             gankIoModels.add(gankIoModel);

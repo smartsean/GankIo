@@ -22,8 +22,16 @@ import sean.com.gankio.ui.activity.PhotoDetailActivity;
  */
 
 public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
+
+    private static final String TAG = "WealAdapter";
+
     private Context context;
+
     private List<GankIoModel> gankIoModels;
+
+    public void setGankIoModelsNone() {
+        this.gankIoModels.clear();
+    }
 
     public void addGankIoModels(List<GankIoModel> gankIoModels) {
         this.gankIoModels.addAll(gankIoModels);
@@ -43,17 +51,31 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         final GankIoModel bean = gankIoModels.get(position);
-        Glide.with(context).load(bean.getUrl())
-                .dontAnimate()
-                .centerCrop()
-                .error(R.drawable.no_image)
-                .into(holder.wealIv);
-        if (Integer.valueOf(bean.getPublishedAt().substring(9,10)) / 2 == 0){
-            holder.dateTv.setText(bean.getPublishedAt().substring(5, 10));
-        }else {
-            holder.dateTv.setText(bean.getPublishedAt()+bean.getDesc());
+
+        holder.card.setTag(bean.getUrl());
+
+        if (holder.card.getTag().equals(bean.getUrl())){
+            Glide.with(context).load(bean.getUrl())
+                    .error(R.drawable.no_image)
+                    .into(holder.wealIv);
         }
+        switch (bean.getBlankLines()) {
+            case 0:
+                holder.dateTv.setText(bean.getDesc());
+                break;
+            case 1:
+                holder.dateTv.setText("\n" + bean.getDesc());
+                break;
+            case 2:
+                holder.dateTv.setText("\n" + bean.getDesc() + "\n");
+                break;
+        }
+
+//        } else {
+//            holder.dateTv.setText(bean.getPublishedAt() + "\n" + bean.getDesc());
+//        }
         holder.wealCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,10 +95,12 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
         ImageView wealIv;
         TextView dateTv;
         CardView wealCv;
+        View card;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
+            card = itemView;
             wealIv = (ImageView) itemView.findViewById(R.id.weal_iv);
             dateTv = (TextView) itemView.findViewById(R.id.date_tv);
             wealCv = (CardView) itemView.findViewById(R.id.weal_cv);

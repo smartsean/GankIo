@@ -44,7 +44,7 @@ public class WebViewActivity extends BaseAtivity {
                 view.loadUrl(url);
                 return true;
             }
-            
+
 
             @Override
             public void onPageFinished(WebView view, String url) {

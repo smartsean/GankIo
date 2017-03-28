@@ -15,8 +15,8 @@
         <ImageView
             android:id="@+id/weal_iv"
             android:layout_width="wrap_content"
-            android:layout_height="240dp"
-            android:scaleType="centerCrop"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
             android:src="@drawable/i" />
 
         <TextView

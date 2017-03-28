@@ -46,8 +46,8 @@ public class AndroidFragment extends BaseSupportFragment {
 
     private int page = 1;
     private LinearLayoutManager lm;
-
-    private final static String TYPE = "type" ;
+    private String loadType;
+    private final static String TYPE = "type";
 
     public final static int ANDROID_KEY = 0X11;
     public final static int IOS_KEY = 0X12;
@@ -57,14 +57,12 @@ public class AndroidFragment extends BaseSupportFragment {
     public final static int FORE_END_KEY = 0X16;
 
 
-    private String loadType;
-
     public static AndroidFragment newInstance(int param1) {
         AndroidFragment fragment = new AndroidFragment();
         Bundle args = new Bundle();
         args.putInt(TYPE, param1);
         fragment.setArguments(args);
-        Log.d(TAG, "newInstance: "+param1);
+        Log.d(TAG, "newInstance: " + param1);
         return fragment;
     }
 
@@ -73,7 +71,6 @@ public class AndroidFragment extends BaseSupportFragment {
         super.onCreate(savedInstanceState);
 
     }
-
 
 
     @Override
@@ -86,15 +83,15 @@ public class AndroidFragment extends BaseSupportFragment {
         initData();
 
         initView();
-        getAndroidData(loadType,page);
+        getAndroidData(loadType, page);
         return view;
     }
 
     private void initData() {
         if (getArguments() != null) {
-            Log.d(TAG, "onCreate: "+"============");
+            Log.d(TAG, "onCreate: " + "============");
             int type = getArguments().getInt(TYPE);
-            switch (type){
+            switch (type) {
                 case ANDROID_KEY:
                     loadType = "Android";
                     break;
@@ -108,25 +105,23 @@ public class AndroidFragment extends BaseSupportFragment {
                     loadType = "前端";
                     break;
                 case EXPANSION_KEY:
-                    Log.d(TAG, "onCreate: "+"拓展资源");
+                    Log.d(TAG, "onCreate: " + "拓展资源");
                     loadType = "拓展资源";
                     break;
                 case REST_VIDEO_KEY:
-                    Log.d(TAG, "onCreate: "+"休息视频");
-
+                    Log.d(TAG, "onCreate: " + "休息视频");
                     loadType = "休息视频";
                     break;
             }
-
-
         }
     }
 
     /**
      * 从网络获取要显示数据
+     *
      * @param page
      */
-    private void getAndroidData(String type,int page) {
+    private void getAndroidData(String type, int page) {
         Log.d(TAG, "getAndroidData: ");
         commonSrl.setRefreshing(true);
         new HttpHolder.PostBuilder(Client.getInstance()
@@ -139,9 +134,6 @@ public class AndroidFragment extends BaseSupportFragment {
                         .subscriber(new BaseHttpSubscriber() {
                             @Override
                             public void onNext(HttpBean httpBean) {
-                                if (commonSrl.isRefreshing()) {
-                                    commonSrl.setRefreshing(false);
-                                }
                                 List<GankIoModel> gankIoModels =
                                         GankController.getInstance().
                                                 getGankIoModels(httpBean.getMessage().toString());
@@ -154,33 +146,35 @@ public class AndroidFragment extends BaseSupportFragment {
     /**
      * 重置页面数据
      */
-    private void reset(){
+    private void reset() {
         page = 1;
         commonAdapter = null;
     }
 
     /**
      * 刷新列表
+     *
      * @param gankIoModels
      */
     private void refreshAndroidList(List<GankIoModel> gankIoModels) {
-        Log.d(TAG, "page: "+page);
-        if (gankIoModels == null){
+        commonSrl.setRefreshing(false);
+        Log.d(TAG, "page: " + page);
+        if (gankIoModels == null) {
             return;
-        }else {
+        } else {
             commonRv.setLayoutManager(lm);
-            if (commonAdapter ==null){
-                commonAdapter = new CommonAdapter(context,gankIoModels);
+            if (commonAdapter == null) {
+                commonAdapter = new CommonAdapter(context, gankIoModels);
                 commonRv.setAdapter(commonAdapter);
 
-            }else {
+            } else {
                 commonAdapter.addGankIoModels(gankIoModels);
                 commonAdapter.notifyDataSetChanged();
             }
 
         }
-
     }
+
 
     /**
      * 初始化View
@@ -191,7 +185,7 @@ public class AndroidFragment extends BaseSupportFragment {
             @Override
             public void onRefresh() {
                 reset();
-                getAndroidData(loadType,page);
+                getAndroidData(loadType, page);
             }
         });
         commonRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(lm) {
@@ -199,14 +193,33 @@ public class AndroidFragment extends BaseSupportFragment {
             public void onLoadMore(int currentPage) {
                 commonSrl.setRefreshing(true);
                 page++;
-                getAndroidData(loadType,page);
+                getAndroidData(loadType, page);
             }
         });
 
     }
 
     @Override
+    public void onResume() {
+        Log.d(TAG, "onResume: " + TYPE);
+        super.onResume();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        Log.d(TAG, "onAttach: " + TYPE);
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        Log.d(TAG, "onDetach: " + TYPE);
+        super.onDetach();
+    }
+
+    @Override
     public void onDestroyView() {
+        Log.d(TAG, "onDestroyView: " + TYPE);
         super.onDestroyView();
         unbinder.unbind();
     }

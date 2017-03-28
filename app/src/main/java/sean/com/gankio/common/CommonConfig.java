@@ -7,4 +7,6 @@ package sean.com.gankio.common;
 public class CommonConfig {
 //    private static final String WEAL = R.string.weal_string;
 
+    public static final int COMMON_AOUNT = 10;
+
 }

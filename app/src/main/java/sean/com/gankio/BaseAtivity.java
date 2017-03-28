@@ -33,18 +33,20 @@ public class BaseAtivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public TextView getCommonTitle(){
+    public TextView getCommonTitle() {
         return commonTitleTv;
     }
 
     /**
      * 子类调用，重新设置Toolbar
      *
-     * @param layout
+     * @param toolbarLayout
+     * @param titleLayout
      */
-    public void setToolBar(int layout) {
+    public void setToolBar(int toolbarLayout, int titleLayout) {
         hideToolBar();
-        commonTitleTb = (Toolbar) content.findViewById(layout);
+        commonTitleTb = (Toolbar) content.findViewById(toolbarLayout);
+        commonTitleTv = (TextView) content.findViewById(titleLayout);
         setSupportActionBar(commonTitleTb);
         //设置actionBar的标题是否显示，对应ActionBar.DISPLAY_SHOW_TITLE。
         getSupportActionBar().setDisplayShowTitleEnabled(false);

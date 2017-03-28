@@ -17,4 +17,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="first_style">第一种方式</string>
+    <string name="second_style">第二种方式</string>
+    <string name="test">测试</string>
 </resources>
