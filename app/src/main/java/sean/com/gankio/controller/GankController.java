@@ -28,6 +28,12 @@ public class GankController {
     }
 
 
+    /**
+     * 正常读取列表拿到网站数据
+     *
+     * @param string
+     * @return
+     */
     public List<GankIoModel> getGankIoModels(String string) {
         Log.d("getGankIoModels", "getGankIoModels: " + string);
         List<GankIoModel> gankIoModels = new ArrayList<>();
@@ -56,6 +62,41 @@ public class GankController {
             }
             gankIoModel.setUsed(gankIoObj.getBoolean("used"));
             gankIoModel.setWho(gankIoObj.getString("who"));
+            gankIoModels.add(gankIoModel);
+        }
+        return gankIoModels;
+    }
+
+    /**
+     * 搜索福利得到的结果
+     *
+     * @param string
+     * @return
+     */
+    public List<GankIoModel> getGankIoWealSearchModels(String string) {
+        Log.d("getGankIoModels", "getGankIoModels: " + string);
+        List<GankIoModel> gankIoModels = new ArrayList<>();
+        JSONObject object = JSON.parseObject(string);
+        if (object.getBoolean("error")) {
+            return gankIoModels;
+        }
+
+        JSONArray gankIoArr = object.getJSONArray("results");
+        for (Object obj : gankIoArr) {
+            JSONObject gankIoObj = JSON.parseObject(obj.toString());
+
+            GankIoModel gankIoModel = new GankIoModel();
+            gankIoModel.setUrl(gankIoObj.getString("url"));
+            gankIoModel.setGanhuo_id(gankIoObj.getString("ganhuo_id"));
+            gankIoModel.setPublishedAt(gankIoObj.getString("publishedAt"));
+            gankIoModel.setReadability(gankIoObj.getString("readability"));
+            gankIoModel.setType(gankIoObj.getString("type"));
+            gankIoModel.setDesc(gankIoObj.getString("desc"));
+            gankIoModel.setWho(gankIoObj.getString("who"));
+            if (gankIoModel.getType().equals("福利")) {
+                gankIoModel.setBlankLines((int) (Math.random() * 10) % 3);
+            }
+            gankIoModel.setImages(gankIoModel.getUrl());
             gankIoModels.add(gankIoModel);
         }
         return gankIoModels;

@@ -2,7 +2,9 @@ package sean.com.gankio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -13,27 +15,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sean.com.gankio.ui.fragment.AndroidFragment;
 import sean.com.gankio.ui.fragment.WealFragment;
+import sean.com.gankio.utils.KeyBoardUtils;
+import sean.com.gankio.utils.ScreenUtils;
 
 import static sean.com.gankio.R.id.weal;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-    private static final int FRAGMENT_WEAL = 0X01;
-    private static final int FRAGMENT_ANDROID = 0X02;
-    private static final int FRAGMENT_IOS = 0X03;
-    private static final int FRAGMENT_APP = 0X04;
-    private static final int FRAGMENT_REST_VIDEO = 0X05;
-    private static final int FRAGMENT_EXPANSION = 0X06;
-    private static final int FRAGMENT_FORE_END = 0X07;
-
 
     @BindView(R.id.common_title_tv)
     TextView commonTitleTv;
@@ -47,11 +51,23 @@ public class MainActivity extends AppCompatActivity {
     private WealFragment wealFragment;
     private AndroidFragment androidFragment;
     private AndroidFragment iosFragment;
+    private AndroidFragment allFragment;
     private AndroidFragment restVideoFragment;
+    private AndroidFragment expandFragment;
+    private AndroidFragment foreEndFragment;
+
+    /**
+     * 用来搜索的fragment
+     */
+    private AndroidFragment searchOtherFragment;
+    private WealFragment searchWealFragment;
 
 
     private Context context;
     private FragmentManager fragmentManager;
+    private PopupWindow popupWindow;
+
+    private String selectType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     private void changeToIos(FragmentTransaction transaction, int type, int showType) {
         setTitleThis(type);
         if (iosFragment == null) {
-            iosFragment = AndroidFragment.newInstance(showType);
+            iosFragment = AndroidFragment.newInstance(showType, null);
             if (!iosFragment.isAdded()) {
                 transaction.add(R.id.content_fl, iosFragment);
             }
@@ -165,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     private void changeToRestVideo(FragmentTransaction transaction, int type, int showType) {
         setTitleThis(type);
         if (restVideoFragment == null) {
-            restVideoFragment = AndroidFragment.newInstance(showType);
+            restVideoFragment = AndroidFragment.newInstance(showType, null);
             if (!restVideoFragment.isAdded()) {
                 transaction.add(R.id.content_fl, restVideoFragment);
             }
@@ -183,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void changeToCommon(FragmentTransaction transaction, int type, int showType) {
         setTitleThis(type);
-        androidFragment = AndroidFragment.newInstance(showType);
+        androidFragment = AndroidFragment.newInstance(showType, null);
         transaction.add(R.id.content_fl, androidFragment);
     }
 
@@ -199,6 +215,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if (restVideoFragment != null && !restVideoFragment.isHidden()) {
             transaction.hide(restVideoFragment);
+        }
+        if (searchWealFragment != null && !searchWealFragment.isHidden()) {
+            transaction.hide(searchWealFragment);
+        }
+        if (searchOtherFragment != null && !searchOtherFragment.isHidden()) {
+            transaction.hide(searchOtherFragment);
         }
     }
 
@@ -228,6 +250,13 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 activityMain.openDrawer(GravityCompat.START);
                 break;
+            case R.id.search_item:
+                getPopupWindow();
+                // 设置相对View的偏移，1、相对的view，2、相对view的x方向偏移，3、相对view的y方向偏移
+                popupWindow.showAsDropDown(new View(this), 0, ScreenUtils.getStatusHeight(MainActivity.this));
+                //打开软键盘
+                KeyBoardUtils.openKeyboard(new Handler(), 0, context);
+                break;
             case R.id.change_style_item:
                 startActivity(new Intent(context, Main2Activity.class));
                 break;
@@ -235,4 +264,121 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * 初始化PopupWindow
+     */
+    protected void initPopupWindow() {
+        String searchContent;
+        final View view = getLayoutInflater().inflate(R.layout.search_popup, null, false);
+        int height = commonTitleTb.getHeight();
+        final EditText searchEt = (EditText) view.findViewById(R.id.search_et);
+        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, height, true);
+        final TextView selectTypeTv = (TextView) view.findViewById(R.id.select_type_tv);
+        final RelativeLayout selectTypeRl = (RelativeLayout) view.findViewById(R.id.select_type_rl);
+        popupWindow.setFocusable(true);//设置外部点击取消
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setAnimationStyle(R.style.AnimBottom);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                    popupWindow = null;
+                }
+                return false;
+            }
+        });
+
+        selectTypeRl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(context)
+                        .title("请选择要搜索的类型")
+                        .items(R.array.types)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                selectTypeTv.setText(text);
+                                selectType = text.toString();
+                                Toast.makeText(MainActivity.this, "你选择了" + text, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
+
+        view.findViewById(R.id.search_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSearchData(selectType, searchEt.getText().toString());
+                popupWindow.dismiss();
+            }
+        });
+        // PopupWindow的消失事件监听，消失的时候，关闭软键盘
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                KeyBoardUtils.closeKeybord(context);
+            }
+        });
+    }
+
+    private void getSearchData(String searchType, String content) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        hideAllFragment(transaction);
+//        if (searchType.equals(getString(R.string.all_text))) {
+        if (searchType.equals("All")) {
+            changeToSearchCommon(transaction, R.string.all_text, content);
+        } else if (searchType.equals(getString(R.string.weal_string))) {
+            changeToSearchWeal(transaction, R.string.weal_string, content);
+        } else {
+
+        }
+    }
+
+    /**
+     * 这个是单一的Fragment，可以不用每次都新建
+     *
+     * @param transaction
+     * @param type
+     */
+    private void changeToSearchWeal(FragmentTransaction transaction, int type, String content) {
+        setTitleThis(type);
+        if (searchWealFragment == null) {
+            searchWealFragment = WealFragment.newInstance(content);
+            if (!searchWealFragment.isAdded()) {
+                transaction.add(R.id.content_fl, searchWealFragment);
+            }
+        } else {
+            transaction.show(searchWealFragment);
+        }
+        transaction.commit();
+    }
+
+    /**
+     * 这个是公共的Fragment，需要根据每次的类型获取
+     *
+     * @param transaction
+     * @param type
+     */
+    private void changeToSearchCommon(FragmentTransaction transaction, int type, String content) {
+        setTitleThis(type);
+        androidFragment = AndroidFragment.newInstance(AndroidFragment.ALL_KEY, content);
+        transaction.add(R.id.content_fl, androidFragment);
+        transaction.commit();
+    }
+
+
+    /**
+     * 获取PopipWinsow实例
+     */
+    private void getPopupWindow() {
+        if (null != popupWindow) {
+            popupWindow.dismiss();
+            return;
+        } else {
+            initPopupWindow();
+        }
+    }
 }

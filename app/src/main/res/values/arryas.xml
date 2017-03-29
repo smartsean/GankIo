@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="types">
+        <item>All</item>
+        <item>福利</item>
+        <item>Android</item>
+        <item>Ios</item>
+        <item>App</item>
+        <item>休息视频</item>
+        <item>扩展资源</item>
+        <item>前端</item>
+    </string-array>
+</resources>

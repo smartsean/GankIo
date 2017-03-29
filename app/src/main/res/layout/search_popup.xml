@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:id="@+id/select_type_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/select_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="12dp"
+            android:drawableRight="@mipmap/ic_keyboard_arrow_down_white_24dp"
+            android:gravity="center_vertical"
+            android:text="@string/all_text"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/search_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@+id/search_bt"
+        android:layout_toRightOf="@+id/select_type_rl"
+        android:background="@drawable/editsharp"
+        android:drawableLeft="@mipmap/search_24"
+        android:hint="请输入关键字..."
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/search_bt"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/search_et"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/search_et"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/editsharp"
+        android:text="搜索"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+</RelativeLayout>

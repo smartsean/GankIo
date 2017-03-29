@@ -17,4 +17,12 @@
         <item name="android:textColor">#7fffffff</item>
         <item name="textAllCaps">false</item>
     </style>
+
+
+    <!--淡入淡出效果-->
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/inuptodown</item>
+        <item name="android:windowExitAnimation">@anim/outdowntoup</item>
+    </style>
+
 </resources>

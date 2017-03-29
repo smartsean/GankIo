@@ -23,6 +23,7 @@ import sean.com.gankio.BaseSupportFragment;
 import sean.com.gankio.R;
 import sean.com.gankio.adapter.CommonAdapter;
 import sean.com.gankio.adapter.GankIoModel;
+import sean.com.gankio.common.CommonConfig;
 import sean.com.gankio.controller.GankController;
 import sean.com.gankio.http.Client;
 import sean.com.gankio.http.HttpHolder;
@@ -49,18 +50,26 @@ public class AndroidFragment extends BaseSupportFragment {
     private String loadType;
     private final static String TYPE = "type";
 
+
+    // 搜索
+    private final static String SEARCH_CONTENT = "searchContent";
+    private boolean isFromSearch = false;
+    private String searchContent;
+
     public final static int ANDROID_KEY = 0X11;
     public final static int IOS_KEY = 0X12;
     public final static int APP_KEY = 0X13;
     public final static int REST_VIDEO_KEY = 0X14;
     public final static int EXPANSION_KEY = 0X15;
     public final static int FORE_END_KEY = 0X16;
+    public final static int ALL_KEY = 0X17;
 
 
-    public static AndroidFragment newInstance(int param1) {
+    public static AndroidFragment newInstance(int param1, String content) {
         AndroidFragment fragment = new AndroidFragment();
         Bundle args = new Bundle();
         args.putInt(TYPE, param1);
+        args.putString(SEARCH_CONTENT, content);
         fragment.setArguments(args);
         Log.d(TAG, "newInstance: " + param1);
         return fragment;
@@ -69,9 +78,7 @@ public class AndroidFragment extends BaseSupportFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,16 +88,19 @@ public class AndroidFragment extends BaseSupportFragment {
         context = getActivity();
         lm = new LinearLayoutManager(context);
         initData();
-
         initView();
-        getAndroidData(loadType, page);
+        getAndroidData();
         return view;
     }
 
     private void initData() {
         if (getArguments() != null) {
-            Log.d(TAG, "onCreate: " + "============");
             int type = getArguments().getInt(TYPE);
+            if (getArguments().getString(SEARCH_CONTENT) != null) {
+                isFromSearch = true;
+                searchContent = getArguments().getString(SEARCH_CONTENT);
+            }
+
             switch (type) {
                 case ANDROID_KEY:
                     loadType = "Android";
@@ -112,35 +122,59 @@ public class AndroidFragment extends BaseSupportFragment {
                     Log.d(TAG, "onCreate: " + "休息视频");
                     loadType = "休息视频";
                     break;
+                case ALL_KEY:
+                    Log.d(TAG, "onCreate: " + "all");
+                    loadType = "all";
+                    break;
             }
         }
     }
 
     /**
      * 从网络获取要显示数据
-     *
-     * @param page
      */
-    private void getAndroidData(String type, int page) {
+    private void getAndroidData() {
         Log.d(TAG, "getAndroidData: ");
         commonSrl.setRefreshing(true);
-        new HttpHolder.PostBuilder(Client.getInstance()
-                .getHttpHolder(), context)
-                .addRequest(RequestParam.newBuilder()
-                        .path("type", type)
-                        .path("count", "10")
-                        .path("page", String.valueOf(page))
-                        .service(IServiceType.CLASS).callGankIo()
-                        .subscriber(new BaseHttpSubscriber() {
-                            @Override
-                            public void onNext(HttpBean httpBean) {
-                                List<GankIoModel> gankIoModels =
-                                        GankController.getInstance().
-                                                getGankIoModels(httpBean.getMessage().toString());
-                                refreshAndroidList(gankIoModels);
-                            }
-                        }).build())
-                .post();
+        if (isFromSearch) {
+            new HttpHolder.PostBuilder(Client.getInstance()
+                    .getHttpHolder(), context)
+                    .addRequest(RequestParam.newBuilder()
+                            .path("content", searchContent)
+                            .path("type", loadType)
+                            .path("count", String.valueOf(CommonConfig.COMMON_AOUNT))
+                            .path("page", String.valueOf(page))
+                            .service(IServiceType.CLASS).callGankIoForSearch()
+                            .subscriber(new BaseHttpSubscriber() {
+                                @Override
+                                public void onNext(HttpBean httpBean) {
+                                    List<GankIoModel> gankIoModels = GankController.getInstance().
+                                            getGankIoWealSearchModels(httpBean.
+                                                    getMessage().toString());
+                                    refreshAndroidList(gankIoModels);
+                                }
+                            }).build())
+                    .post();
+        } else {
+            new HttpHolder.PostBuilder(Client.getInstance()
+                    .getHttpHolder(), context)
+                    .addRequest(RequestParam.newBuilder()
+                            .path("type", loadType)
+                            .path("count", String.valueOf(CommonConfig.COMMON_AOUNT))
+                            .path("page", String.valueOf(page))
+                            .service(IServiceType.CLASS).callGankIo()
+                            .subscriber(new BaseHttpSubscriber() {
+                                @Override
+                                public void onNext(HttpBean httpBean) {
+                                    List<GankIoModel> gankIoModels =
+                                            GankController.getInstance().
+                                                    getGankIoModels(httpBean.getMessage().toString());
+                                    refreshAndroidList(gankIoModels);
+                                }
+                            }).build())
+                    .post();
+        }
+
     }
 
     /**
@@ -185,7 +219,7 @@ public class AndroidFragment extends BaseSupportFragment {
             @Override
             public void onRefresh() {
                 reset();
-                getAndroidData(loadType, page);
+                getAndroidData();
             }
         });
         commonRv.addOnScrollListener(new EndlessRecyclerOnScrollListener(lm) {
@@ -193,7 +227,7 @@ public class AndroidFragment extends BaseSupportFragment {
             public void onLoadMore(int currentPage) {
                 commonSrl.setRefreshing(true);
                 page++;
-                getAndroidData(loadType, page);
+                getAndroidData();
             }
         });
 

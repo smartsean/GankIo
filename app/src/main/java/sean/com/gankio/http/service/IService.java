@@ -11,7 +11,10 @@ import syringe.Service;
 @Service
 public interface IService {
 
-    @GET("{type}/{count}/{page}")
+    @GET("data/{type}/{count}/{page}")
     Observable<String> callGankIo(@Path("type") String type, @Path("count") String count, @Path("page") String page);
+
+    @GET("search/query/{content}/category/{type}/count/{count}/page/{page}")
+    Observable<String> callGankIoForSearch(@Path("content") String content, @Path("type") String type, @Path("count") String count, @Path("page") String page);
 
 }

@@ -29,6 +29,7 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
     private List<GankIoModel> gankIoModels;
 
+
     public void setGankIoModelsNone() {
         this.gankIoModels.clear();
     }
@@ -56,7 +57,7 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
         holder.card.setTag(bean.getUrl());
 
-        if (holder.card.getTag().equals(bean.getUrl())){
+        if (holder.card.getTag().equals(bean.getUrl())) {
             Glide.with(context).load(bean.getUrl())
                     .error(R.drawable.no_image)
                     .into(holder.wealIv);

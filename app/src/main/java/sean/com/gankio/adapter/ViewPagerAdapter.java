@@ -62,12 +62,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new WealFragment());
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.ANDROID_KEY));
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.IOS_KEY));
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.APP_KEY));
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.REST_VIDEO_KEY));
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.EXPANSION_KEY));
-        fragments.add(AndroidFragment.newInstance(AndroidFragment.FORE_END_KEY));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.ANDROID_KEY,null));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.IOS_KEY,null));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.APP_KEY,null));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.REST_VIDEO_KEY,null));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.EXPANSION_KEY,null));
+        fragments.add(AndroidFragment.newInstance(AndroidFragment.FORE_END_KEY,null));
         return fragments;
     }
 

@@ -5,5 +5,5 @@ package sean.com.gankio.http;
  */
 
 public class ApiConstant {
-    public static final String BASE_URL = "http://gank.io/api/data/";
+    public static final String BASE_URL = "http://gank.io/api/";
 }

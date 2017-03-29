@@ -29,7 +29,10 @@ public class GankIoModel {
     private boolean used;
     private String who;
     private String images;//这里只取第一个图片的地址
-    private int blankLines;
+    private int blankLines;//用来随机设置desc长度
+    // 搜索福利多出的字段
+    private String ganhuo_id;
+    private String readability;
 
     public String get_id() {
         return _id;
@@ -117,5 +120,21 @@ public class GankIoModel {
 
     public void setBlankLines(int blankLines) {
         this.blankLines = blankLines;
+    }
+
+    public String getGanhuo_id() {
+        return ganhuo_id;
+    }
+
+    public void setGanhuo_id(String ganhuo_id) {
+        this.ganhuo_id = ganhuo_id;
+    }
+
+    public String getReadability() {
+        return readability;
+    }
+
+    public void setReadability(String readability) {
+        this.readability = readability;
     }
 }

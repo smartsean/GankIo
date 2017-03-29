@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import sean.com.gankio.http.service.RequestParam;
 public class WealFragment extends BaseSupportFragment {
 
     private static final String TAG = "WealFragment";
+    private static final String SEARCH_CONTENT_KEY = "content";
 
     @BindView(R.id.weal_rv)
     RecyclerView wealRv;
@@ -48,6 +50,8 @@ public class WealFragment extends BaseSupportFragment {
     private boolean mIsFirstTimeTouchBottom = true;
     private int page = 1;
     private List<GankIoModel> gankIoModels;
+    private boolean isFromSearch = false;
+    private String searchContent;
 
 
     @Override
@@ -55,11 +59,24 @@ public class WealFragment extends BaseSupportFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weal, container, false);
         initView(view);
+        if (getArguments() != null) {
+            isFromSearch = true;
+            searchContent = getArguments().getString(SEARCH_CONTENT_KEY);
+        }
         initData();
-        getWealData(page);
+        getWealData();
         return view;
     }
 
+
+    public static WealFragment newInstance(String param1) {
+        WealFragment fragment = new WealFragment();
+        Bundle args = new Bundle();
+        args.putString(SEARCH_CONTENT_KEY, param1);
+        fragment.setArguments(args);
+        Log.d(TAG, "newInstance: " + param1);
+        return fragment;
+    }
 
     private void initView(View view) {
         unbinder = ButterKnife.bind(this, view);
@@ -70,7 +87,7 @@ public class WealFragment extends BaseSupportFragment {
             public void onRefresh() {
                 page = 1;
                 wealAdapter.setGankIoModelsNone();
-                getWealData(page);
+                getWealData();
             }
         });
     }
@@ -88,29 +105,52 @@ public class WealFragment extends BaseSupportFragment {
     /**
      * 获取数据
      */
-    private void getWealData(final int page) {
-        new HttpHolder.PostBuilder(Client.getInstance()
-                .getHttpHolder(), context)
-                .addRequest(RequestParam.newBuilder()
-                        .path("type", wealString)
-                        .path("count", String.valueOf(CommonConfig.COMMON_AOUNT))
-                        .path("page", String.valueOf(page))
-                        .service(IServiceType.CLASS).callGankIo()
-                        .subscriber(new BaseHttpSubscriber() {
-                            @Override
-                            public void onNext(HttpBean httpBean) {
-                                if (wealSrl.isRefreshing()) {
-                                    wealSrl.setRefreshing(false);
+    private void getWealData() {
+        if (isFromSearch) {
+            new HttpHolder.PostBuilder(Client.getInstance()
+                    .getHttpHolder(), context)
+                    .addRequest(RequestParam.newBuilder()
+                            .path("content", searchContent)
+                            .path("type", wealString)
+                            .path("count", String.valueOf(CommonConfig.COMMON_AOUNT))
+                            .path("page", String.valueOf(page))
+                            .service(IServiceType.CLASS).callGankIoForSearch()
+                            .subscriber(new BaseHttpSubscriber() {
+                                @Override
+                                public void onNext(HttpBean httpBean) {
+                                    if (wealSrl.isRefreshing()) {
+                                        wealSrl.setRefreshing(false);
+                                    }
+                                    gankIoModels = GankController.getInstance().
+                                            getGankIoWealSearchModels(httpBean.
+                                                    getMessage().toString());
+                                    refreshWealList(gankIoModels);
                                 }
-                                gankIoModels = GankController.getInstance().
-                                        getGankIoModels(httpBean.
-                                                getMessage().toString());
-                                refreshWealList(gankIoModels);
-                            }
-                        }).build())
-                .post();
+                            }).build())
+                    .post();
+        } else {
+            new HttpHolder.PostBuilder(Client.getInstance()
+                    .getHttpHolder(), context)
+                    .addRequest(RequestParam.newBuilder()
+                            .path("type", wealString)
+                            .path("count", String.valueOf(CommonConfig.COMMON_AOUNT))
+                            .path("page", String.valueOf(page))
+                            .service(IServiceType.CLASS).callGankIo()
+                            .subscriber(new BaseHttpSubscriber() {
+                                @Override
+                                public void onNext(HttpBean httpBean) {
+                                    if (wealSrl.isRefreshing()) {
+                                        wealSrl.setRefreshing(false);
+                                    }
+                                    gankIoModels = GankController.getInstance().
+                                            getGankIoModels(httpBean.
+                                                    getMessage().toString());
+                                    refreshWealList(gankIoModels);
+                                }
+                            }).build())
+                    .post();
+        }
     }
-
 
     /**
      * 给RecyclerView添加滑动监听
@@ -128,7 +168,7 @@ public class WealFragment extends BaseSupportFragment {
                     if (!mIsFirstTimeTouchBottom) {
                         page += 1;
                         wealSrl.setRefreshing(true);
-                        getWealData(page);
+                        getWealData();
                     } else {
                         mIsFirstTimeTouchBottom = false;
                     }
