@@ -66,6 +66,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
         holder.publishTv.setText(TextUtils.isEmpty(bean.getPublishedAt()) ? "111" : bean.getPublishedAt().substring(0, 10));
         holder.descTv.setText(TextUtils.isEmpty(bean.getDesc()) ? "作者未知" : bean.getDesc());
         Glide.with(context).load(bean.getImages()).error(R.drawable.no_image).into(holder.imagesIv);
+        holder.typeTv.setText(bean.getType());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +96,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
         TextView authorTv;
         TextView publishTv;
         TextView descTv;
+        TextView typeTv;
 
 
         public CommonViewHolder(View itemView) {
@@ -104,6 +106,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
             authorTv = (TextView) itemView.findViewById(R.id.author_tv);
             publishTv = (TextView) itemView.findViewById(R.id.publish_time_tv);
             descTv = (TextView) itemView.findViewById(R.id.desc_tv);
+            typeTv = (TextView) itemView.findViewById(R.id.type_tv);
         }
     }
 

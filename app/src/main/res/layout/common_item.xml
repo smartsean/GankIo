@@ -8,49 +8,65 @@
     app:cardCornerRadius="4dp">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <ImageView
-            android:padding="4dp"
-            android:src="@drawable/i"
-            android:scaleType="centerCrop"
             android:id="@+id/images_iv"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/i" />
 
         <RelativeLayout
-       android:layout_margin="12dp"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="0.91">
 
-       <TextView
-           android:text="作者未知"
-           android:textSize="16dp"
-           android:textColor="#000000"
-           android:id="@+id/author_tv"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/author_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="作者未知"
+                android:textColor="#000000"
+                android:textSize="16dp" />
 
-       <TextView
-           android:text="2017-12-12"
-           android:layout_marginRight="8dp"
-           android:layout_alignParentRight="true"
-           android:id="@+id/publish_time_tv"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/publish_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:text="2017-12-12" />
 
-       <TextView
-           android:id="@+id/desc_tv"
-           android:layout_marginRight="8dp"
-           android:text="可能是最优雅的切换布局的方法[android控件]"
-           android:layout_marginTop="12dp"
-           android:layout_below="@+id/author_tv"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
+            <TextView
+                android:ellipsize="end"
+                android:id="@+id/desc_tv"
+                android:maxLines="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/author_tv"
+                android:layout_marginRight="8dp"
+                android:maxEms="13"
+                android:layout_marginTop="8dp"
+                android:text="可能是最优雅的切换布局的方法[android控件]" />
 
-   </RelativeLayout>
+            <TextView
+                android:id="@+id/type_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="8dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

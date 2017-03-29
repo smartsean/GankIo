@@ -13,16 +13,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -238,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
         commonTitleTv.setText(res);
     }
 
+    private void setTitleThis(String title) {
+        commonTitleTv.setText(title);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toobar, menu);
@@ -290,6 +296,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (TextUtils.isEmpty(searchEt.getText().toString())) {
+                        return false;
+                    } else {
+                        getSearchData(selectType, searchEt.getText().toString());
+                    }
+                    popupWindow.dismiss();
+                }
+                return false;
+            }
+        });
         selectTypeRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 selectTypeTv.setText(text);
                                 selectType = text.toString();
-                                Toast.makeText(MainActivity.this, "你选择了" + text, Toast.LENGTH_SHORT).show();
+                                KeyBoardUtils.openKeyboard(new Handler(), 300, context);
                             }
                         })
                         .show();
@@ -325,15 +346,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getSearchData(String searchType, String content) {
+        searchType = TextUtils.isEmpty(searchType) ? getResourcesString(R.string.all_text) : searchType;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         hideAllFragment(transaction);
-//        if (searchType.equals(getString(R.string.all_text))) {
-        if (searchType.equals("All")) {
-            changeToSearchCommon(transaction, R.string.all_text, content);
-        } else if (searchType.equals(getString(R.string.weal_string))) {
+        if (searchType.equals(getString(R.string.weal_string))) {
             changeToSearchWeal(transaction, R.string.weal_string, content);
         } else {
-
+            changeToSearchCommon(transaction, searchType, content);
         }
     }
 
@@ -362,11 +381,31 @@ public class MainActivity extends AppCompatActivity {
      * @param transaction
      * @param type
      */
-    private void changeToSearchCommon(FragmentTransaction transaction, int type, String content) {
+    private void changeToSearchCommon(FragmentTransaction transaction, String type, String content) {
         setTitleThis(type);
-        androidFragment = AndroidFragment.newInstance(AndroidFragment.ALL_KEY, content);
+        int searchType = AndroidFragment.ALL_KEY;
+        if (type.equals(getResourcesString(R.string.all_text))) {
+            searchType = AndroidFragment.ALL_KEY;
+        } else if (type.equals(getResourcesString(R.string.android_text))) {
+            searchType = AndroidFragment.ANDROID_KEY;
+        } else if (type.equals(getResourcesString(R.string.ios))) {
+            searchType = AndroidFragment.IOS_KEY;
+        } else if (type == getResourcesString(R.string.app_text)) {
+            searchType = AndroidFragment.APP_KEY;
+        } else if (type == getResourcesString(R.string.rest_video_text)) {
+            searchType = AndroidFragment.REST_VIDEO_KEY;
+        } else if (type == getResourcesString(R.string.expand_text)) {
+            searchType = AndroidFragment.EXPANSION_KEY;
+        } else if (type == getResourcesString(R.string.fore_end_text)) {
+            searchType = AndroidFragment.FORE_END_KEY;
+        }
+        androidFragment = AndroidFragment.newInstance(searchType, content);
         transaction.add(R.id.content_fl, androidFragment);
         transaction.commit();
+    }
+
+    private String getResourcesString(int id) {
+        return getResources().getString(id);
     }
 
 

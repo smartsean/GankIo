@@ -3,6 +3,7 @@ package sean.com.gankio.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,6 +21,7 @@ public class WebViewActivity extends BaseAtivity {
     private String url;
     private WebView webView;
     private AVLoadingIndicatorView webViewLoadingAnimation;
+    private boolean isOnPause = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +56,19 @@ public class WebViewActivity extends BaseAtivity {
                 Log.d(TAG, "onPageFinished: ");
             }
         });
+    }
+
+    //销毁之前重新加载空网页，然后销毁
+    @Override
+    protected void onDestroy() {
+        if (webView != null) {
+            webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            webView.clearHistory();
+
+            ((ViewGroup) webView.getParent()).removeView(webView);
+            webView.destroy();
+            webView = null;
+        }
+        super.onDestroy();
     }
 }
