@@ -1,7 +1,6 @@
 package sean.com.gankio.ui.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -21,7 +20,6 @@ public class WebViewActivity extends BaseAtivity {
     private String url;
     private WebView webView;
     private AVLoadingIndicatorView webViewLoadingAnimation;
-    private boolean isOnPause = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,6 @@ public class WebViewActivity extends BaseAtivity {
                 super.onPageFinished(view, url);
                 webViewLoadingAnimation.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
-                Log.d(TAG, "onPageFinished: ");
             }
         });
     }

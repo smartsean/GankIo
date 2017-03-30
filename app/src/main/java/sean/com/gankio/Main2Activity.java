@@ -30,11 +30,31 @@ public class Main2Activity extends BaseAtivity {
         setBackArrow();
         setTitle(getString(R.string.second_style));
         gankIoVp.setAdapter(new ViewPagerAdapter(context, getSupportFragmentManager()));
+        // 设置缓存
         gankIoVp.setOffscreenPageLimit(7);
         gankIoTl.setupWithViewPager(gankIoVp);
         //设置可以滑动
         gankIoTl.setTabMode(TabLayout.MODE_SCROLLABLE);
         // 跳转至指定位置
 //        gankIoVp.setCurrentItem(6);
+
+
+        // ViewPager切换时NestedScrollView滑动到顶部
+        gankIoVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                ((NestedScrollView) findViewById(R.id.nestedScrollView)).scrollTo(0, 0);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 }
