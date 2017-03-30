@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/search_item"
-        android:icon="@mipmap/ic_search_white_48dp"
+        android:icon="@drawable/common_search_ic"
         android:title="Share"
         app:showAsAction="always" />
     <!--<item-->
@@ -13,7 +13,7 @@
         <!--app:showAsAction="always" />-->
     <item
         android:id="@+id/change_style_item"
-        android:icon="@mipmap/ic_swap_horiz_white_48dp"
+        android:icon="@drawable/change_style_ic"
         android:title="More"
         app:showAsAction="always" />
 </menu>

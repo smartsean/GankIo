@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            commonTitleTb.setNavigationIcon(R.mipmap.ic_menu_white_24dp);
+            commonTitleTb.setNavigationIcon(R.drawable.common_menu_ic);
         }
     }
 

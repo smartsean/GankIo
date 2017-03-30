@@ -59,7 +59,7 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
 
         if (holder.card.getTag().equals(bean.getUrl())) {
             Glide.with(context).load(bean.getUrl())
-                    .error(R.drawable.no_image)
+                    .error(R.drawable.error_image)
                     .into(holder.wealIv);
         }
         switch (bean.getBlankLines()) {

@@ -63,7 +63,7 @@ public class BaseAtivity extends AppCompatActivity {
      * 设置左上角back按钮
      */
     public void setBackArrow() {
-        final Drawable upArrow = getResources().getDrawable(R.mipmap.common_back_ic);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.common_back_ic);
         //给ToolBar设置左侧的图标
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
         // 给左上角图标的左边加上一个返回的图标 。对应ActionBar.DISPLAY_HOME_AS_UP

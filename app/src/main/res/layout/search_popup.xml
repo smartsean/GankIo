@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="12dp"
-            android:drawableRight="@mipmap/ic_keyboard_arrow_down_white_24dp"
+            android:drawableRight="@drawable/toward_bottom_ic"
             android:gravity="center_vertical"
             android:text="@string/all_text"
             android:textColor="@color/white" />
@@ -31,7 +31,7 @@
         android:layout_toLeftOf="@+id/search_bt"
         android:layout_toRightOf="@+id/select_type_rl"
         android:background="@drawable/editsharp"
-        android:drawableLeft="@mipmap/search_24"
+        android:drawableLeft="@drawable/common_search_ic"
         android:hint="请输入关键字..."
         android:imeOptions="actionSearch"
         android:inputType="text"

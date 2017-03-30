@@ -3,33 +3,33 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/weal"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_girls"
             android:title="@string/weal_string" />
         <item
             android:id="@+id/android"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_android"
             android:title="@string/android_text" />
         <item
             android:id="@+id/ios"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_ios"
             android:title="@string/ios" />
 
         <item
             android:id="@+id/rest_video"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_video"
             android:title="休息视频" />
         <item
             android:id="@+id/expansion_resources"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_resource"
             android:title="扩展资源" />
         <item
             android:id="@+id/app"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_app"
             android:title="App" />
 
         <item
             android:id="@+id/fore_end"
-            android:icon="@mipmap/ic_search_white_48dp"
+            android:icon="@drawable/drawer_js"
             android:title="前端" />
 
     </group>

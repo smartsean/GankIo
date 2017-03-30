@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/i"/>
+        android:src="@drawable/placeholder_image"/>
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/image_loading_animation"
         android:layout_centerInParent="true"

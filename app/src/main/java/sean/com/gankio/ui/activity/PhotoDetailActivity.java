@@ -37,7 +37,7 @@ public class PhotoDetailActivity extends BaseAtivity {
         imageUrl = getIntent().getStringExtra("url");
         Glide.with(this).load(imageUrl)
                 .thumbnail(0.5f)
-                .error(R.drawable.no_image)
+                .error(R.drawable.error_image)
                 .listener(glideRequestListener)
                 .crossFade()
                 .into(imageDetailPv);

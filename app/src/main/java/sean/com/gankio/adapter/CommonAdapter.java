@@ -65,7 +65,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
         holder.authorTv.setText(TextUtils.isEmpty(bean.getWho()) ? "作者未知" : bean.getWho());
         holder.publishTv.setText(TextUtils.isEmpty(bean.getPublishedAt()) ? "111" : bean.getPublishedAt().substring(0, 10));
         holder.descTv.setText(TextUtils.isEmpty(bean.getDesc()) ? "作者未知" : bean.getDesc());
-        Glide.with(context).load(bean.getImages()).error(R.drawable.no_image).into(holder.imagesIv);
+        Glide.with(context).load(bean.getImages()).error(R.drawable.error_image).into(holder.imagesIv);
         holder.typeTv.setText(bean.getType());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
