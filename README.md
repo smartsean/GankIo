@@ -10,7 +10,7 @@
 
 ## 效果图
 
-![gif.gif](http://upload-images.jianshu.io/upload_images/1744889-286a05c0cb3c316e.gif?imageMogr2/auto-orient/strip)
+![gif.gif](https://github.com/Seancss/GankIo/blob/master/resource/gankio.gif)
 
 画质有点渣，有兴趣的可以去下载 App 去体验下：[安装包下载](https://pan.baidu.com/s/1pLsIpnH)    密码：ckgd
 
