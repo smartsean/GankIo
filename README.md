@@ -35,7 +35,7 @@
 
 本项目在继续完善中。
 
-> 我的博客：[博客传送门](http://www.smartsean.cn/)
-> 我的简书：[简书传送门](http://www.jianshu.com/u/b58209d17f98)
-> 我的CSDN：[CSDN传送门](http://blog.csdn.net/sean_css)
-> 我的GitHub：[GitHub传送门](https://github.com/Seancss)
+> - 我的博客：[博客传送门](http://www.smartsean.cn/)
+- 我的简书：[简书传送门](http://www.jianshu.com/u/b58209d17f98)
+- 我的CSDN：[CSDN传送门](http://blog.csdn.net/sean_css)
+- 我的GitHub：[GitHub传送门](https://github.com/Seancss)
