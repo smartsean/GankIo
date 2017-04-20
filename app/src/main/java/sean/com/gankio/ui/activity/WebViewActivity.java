@@ -53,8 +53,14 @@ public class WebViewActivity extends BaseAtivity {
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+            public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+//                view.loadUrl(url);
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.loadUrl(url);
+                    }
+                });
                 return true;
             }
 
