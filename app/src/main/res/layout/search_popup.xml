@@ -5,6 +5,7 @@
     android:background="@color/colorPrimary">
 
     <RelativeLayout
+        android:layout_marginLeft="12dp"
         android:id="@+id/select_type_rl"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -14,7 +15,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="12dp"
             android:drawableRight="@drawable/toward_bottom_ic"
             android:gravity="center_vertical"
             android:text="@string/all_text"
