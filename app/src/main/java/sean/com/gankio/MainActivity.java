@@ -277,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
      * 初始化PopupWindow
      */
     protected void initPopupWindow() {
-        String searchContent;
         final View view = getLayoutInflater().inflate(R.layout.search_popup, null, false);
         int height = commonTitleTb.getHeight();
         final EditText searchEt = (EditText) view.findViewById(R.id.search_et);
@@ -285,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView selectTypeTv = (TextView) view.findViewById(R.id.select_type_tv);
         final RelativeLayout selectTypeRl = (RelativeLayout) view.findViewById(R.id.select_type_rl);
         popupWindow.setFocusable(true);//设置外部点击取消
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());// 不设置的话不能关闭此 PopupWindow
         popupWindow.setAnimationStyle(R.style.AnimBottom);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -303,10 +302,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(searchEt.getText().toString())) {
+                    String searchContent = searchEt.getText().toString();
+                    if (TextUtils.isEmpty(searchContent)) {
                         return false;
                     } else {
-                        getSearchData(selectType, searchEt.getText().toString());
+                        getSearchData(selectType, searchContent);
                     }
                     popupWindow.dismiss();
                 }
