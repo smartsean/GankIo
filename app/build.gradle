@@ -11,12 +11,51 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    /**
+     * 配置签名信息
+     */
+    signingConfigs {
+        release {
+            storeFile file("${releaseSignStorePath}")
+            storePassword "${releaseSignStorePass}"
+            keyAlias "${releaseSignAlias}"
+            keyPassword "${releaseSignAliasPass}"
+        }
+    }
+
+    /**
+     * 配置编译信息
+     */
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            applicationIdSuffix '.debug'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    /**
+     * 配置不同包名，可以安装两个版本的app
+     */
+    productFlavors{
+        beta{
+            applicationId 'sean.com.gankio.beta'
+        }
+        production{
+            applicationId 'sean.com.gankio'
+        }
+    }
+
 }
 
 dependencies {
@@ -24,10 +63,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     /** Glide加载图片*/
     /** view的注入框架*/
-
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.android.support:cardview-v7:25.3.0'
@@ -46,4 +83,5 @@ dependencies {
     annotationProcessor 'com.zhj:syringe-compiler:1.0.0'
     compile 'com.wang.avi:library:2.1.3'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.2'
+    compile files('libs/BmobStat_v1.1_170114.jar')
 }

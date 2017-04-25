@@ -9,4 +9,6 @@ public class CommonConfig {
 
     public static final int COMMON_AOUNT = 10;
 
+    public static final int EXIT_WAIT_TIME = 2000;
+
 }

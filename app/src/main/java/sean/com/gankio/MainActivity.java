@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -38,7 +37,7 @@ import sean.com.gankio.utils.ScreenUtils;
 
 import static sean.com.gankio.R.id.weal;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends IndexActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -54,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private WealFragment wealFragment;
     private AndroidFragment androidFragment;
     private AndroidFragment iosFragment;
-    private AndroidFragment allFragment;
     private AndroidFragment restVideoFragment;
-    private AndroidFragment expandFragment;
-    private AndroidFragment foreEndFragment;
 
     /**
      * 用来搜索的fragment
@@ -77,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        String appKey = "f556f726bd727979cb9ef497b72ef215";
+        cn.bmob.v3.statistics.AppStat.i(appKey, "");
         fragmentManager = getSupportFragmentManager();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         context = this;
@@ -347,6 +345,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 获取PopipWinsow实例
+     */
+    private void getPopupWindow() {
+        if (null != popupWindow) {
+            popupWindow.dismiss();
+            return;
+        } else {
+            initPopupWindow();
+        }
+    }
+
     private void getSearchData(String searchType, String content) {
         searchType = TextUtils.isEmpty(searchType) ? getResourcesString(R.string.all_text) : searchType;
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -411,15 +421,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * 获取PopipWinsow实例
-     */
-    private void getPopupWindow() {
-        if (null != popupWindow) {
-            popupWindow.dismiss();
-            return;
-        } else {
-            initPopupWindow();
-        }
-    }
+
+
+
 }
