@@ -1,0 +1,11 @@
+pwd: 123456
+alias: debug
+alias pwd: 123456
+
+
+名字: SmartSean
+单位: Persomal
+组织: Persomal
+城市: SH
+省: SH
+国家: CH

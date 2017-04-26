@@ -22,6 +22,12 @@ android {
             keyAlias "${releaseSignAlias}"
             keyPassword "${releaseSignAliasPass}"
         }
+        debug {
+            storeFile file("${debugSignStorePath}")
+            storePassword "${debugSignStorePass}"
+            keyAlias "${debugSignAlias}"
+            keyPassword "${debugSignAliasPass}"
+        }
     }
 
     /**
@@ -35,6 +41,9 @@ android {
         }
         debug {
             applicationIdSuffix '.debug'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -47,11 +56,11 @@ android {
     /**
      * 配置不同包名，可以安装两个版本的app
      */
-    productFlavors{
-        beta{
+    productFlavors {
+        beta {
             applicationId 'sean.com.gankio.beta'
         }
-        production{
+        production {
             applicationId 'sean.com.gankio'
         }
     }
