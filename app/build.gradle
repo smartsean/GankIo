@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true // 突破应用方法书65535的限制
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
 
     /**
@@ -38,6 +40,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            //指定release包的输出文件名就是我们渠道名字
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith(".apk")) {
+                        def fileName = "${variant.productFlavors[0].name}" + ".apk"
+                        output.outputFile = new File(outputFile.parent, fileName);
+                    }
+                }
+            }
         }
         debug {
             applicationIdSuffix '.debug'
@@ -63,6 +75,21 @@ android {
         production {
             applicationId 'sean.com.gankio'
         }
+
+        xiaomi {
+            //manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
+            // 指定app的名称，String 代表类型，app_name代表strings.xml中的key，
+            // xiaomi_app代表strings.xml中的对应key的value
+            resValue "string", "app_name", "xiaomi_app"
+        }
+        wandoujia {
+            //manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
+            resValue "string", "app_name", "wandoujia_app"
+        }
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: "name"]
     }
 
 }
@@ -93,4 +120,5 @@ dependencies {
     compile 'com.wang.avi:library:2.1.3'
     compile 'com.afollestad.material-dialogs:commons:0.9.4.2'
     compile files('libs/BmobStat_v1.1_170114.jar')
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }
