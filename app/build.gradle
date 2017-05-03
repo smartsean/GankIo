@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
 
+//测试版本号
+def debugVersionCode = 1
+//测试版本名
+def debugVersionName = '1.0'
+
+//生产版本号
+def releaseVersionCode = 1
+//生产版本名
+def releaseVersionName = '1.0'
+
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -7,8 +18,6 @@ android {
         applicationId "sean.com.gankio"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true // 突破应用方法书65535的限制
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
@@ -40,22 +49,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            //指定release包的输出文件名就是我们渠道名字
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith(".apk")) {
-                        def fileName = "${variant.productFlavors[0].name}" + ".apk"
-                        output.outputFile = new File(outputFile.parent, fileName);
-                    }
-                }
-            }
         }
         debug {
-            applicationIdSuffix '.debug'
+            applicationIdSuffix '.debug'//包名之后加上.debug 为了同时安装debug和release两个版本
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -69,27 +68,43 @@ android {
      * 配置不同包名，可以安装两个版本的app
      */
     productFlavors {
-        beta {
-            applicationId 'sean.com.gankio.beta'
-        }
-        production {
-            applicationId 'sean.com.gankio'
-        }
-
         xiaomi {
             //manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
             // 指定app的名称，String 代表类型，app_name代表strings.xml中的key，
             // xiaomi_app代表strings.xml中的对应key的value
-            resValue "string", "app_name", "xiaomi_app"
+            resValue "string", "app_name", "干货-小米"
         }
         wandoujia {
             //manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
-            resValue "string", "app_name", "wandoujia_app"
+            resValue "string", "app_name", "干货-豌豆荚"
         }
     }
 
+    /**
+     * 根据不同的Flavors名字来设置友盟渠道
+     */
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: "name"]
+    }
+
+    /**
+     * 配置版本、版本号，以及生成的apk名称
+     */
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.mergedFlavor.versionCode = releaseVersionCode
+            variant.mergedFlavor.versionName = releaseVersionName
+        } else if (variant.buildType.name.equals('debug')) {
+            variant.mergedFlavor.versionCode = debugVersionCode
+            variant.mergedFlavor.versionName = debugVersionName
+        }
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith(".apk")) {
+                def fileName = "${variant.productFlavors[0].name}" + "-" + new Date().format('yyyy-MM-dd') + "-" + variant.buildType.name + ".apk"
+                output.outputFile = new File(outputFile.parent, fileName);
+            }
+        }
     }
 
 }
@@ -106,9 +121,8 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.bumptech.glide:okhttp-integration:1.4.0@aar'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
-
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support:design:25.3.0'

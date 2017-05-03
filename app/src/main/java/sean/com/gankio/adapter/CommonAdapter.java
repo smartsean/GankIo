@@ -17,7 +17,7 @@ import java.util.List;
 import sean.com.gankio.R;
 import sean.com.gankio.ui.activity.PhotoDetailActivity;
 import sean.com.gankio.ui.activity.WebViewActivity;
-import sean.com.gankio.utils.GlideUtil;
+import sean.com.gankio.utils.ImageLoader;
 
 /**
  * Created by Sean on 17/3/25.
@@ -65,8 +65,7 @@ public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.CommonView
         holder.authorTv.setText(TextUtils.isEmpty(bean.getWho()) ? "作者未知" : bean.getWho());
         holder.publishTv.setText(TextUtils.isEmpty(bean.getPublishedAt()) ? "111" : bean.getPublishedAt().substring(0, 10));
         holder.descTv.setText(TextUtils.isEmpty(bean.getDesc()) ? "作者未知" : bean.getDesc());
-        GlideUtil.getInstance().loadThumbnailImage(context, holder.imagesIv, bean.getImages());
-//        Glide.with(context).load(bean.getImages()).error(R.drawable.error_image).into(holder.imagesIv);
+        ImageLoader.getInstance().loadNormal(context, holder.imagesIv, bean.getImages());
         holder.typeTv.setText(bean.getType());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

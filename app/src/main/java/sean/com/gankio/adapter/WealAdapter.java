@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import sean.com.gankio.R;
 import sean.com.gankio.ui.activity.PhotoDetailActivity;
+import sean.com.gankio.utils.ImageLoader;
 
 /**
  * Created by Sean on 2017/3/24.
@@ -58,9 +57,11 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
         holder.card.setTag(bean.getUrl());
 
         if (holder.card.getTag().equals(bean.getUrl())) {
-            Glide.with(context).load(bean.getUrl())
-                    .error(R.drawable.error_image)
-                    .into(holder.wealIv);
+//            Glide.with(context).load(bean.getUrl())
+//                    .error(R.drawable.error_image)
+//                    .into(holder.wealIv);
+            ImageLoader.getInstance().loadNormal(context, holder.wealIv, bean.getUrl());
+//            GlideUtil.getInstance().loadImage(context,holder.wealIv,bean.getUrl(),true);
         }
         switch (bean.getBlankLines()) {
             case 0:
@@ -73,10 +74,6 @@ public class WealAdapter extends RecyclerView.Adapter<WealAdapter.ViewHolder> {
                 holder.dateTv.setText("\n" + bean.getDesc() + "\n");
                 break;
         }
-
-//        } else {
-//            holder.dateTv.setText(bean.getPublishedAt() + "\n" + bean.getDesc());
-//        }
         holder.wealCv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
