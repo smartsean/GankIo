@@ -6,14 +6,16 @@
 
 先贴上项目地址[Gank.io客户端](https://github.com/Seancss/GankIo)，希望能和大家互相学习。
 
-[App下载](https://pan.baidu.com/s/1pLsIpnH)    密码：ckgd
+1. [官网](http://gankio.bmob.site/)
+2. [App下载地址](https://fir.im/bfp5)
 
 ## 效果图
 
 ![gif.gif](https://github.com/Seancss/GankIo/blob/master/resource/gankio.gif)
 
-画质有点渣，有兴趣的可以去下载 App 去体验下：[安装包下载](https://pan.baidu.com/s/1pLsIpnH)    密码：ckgd
-
+画质有点渣，有兴趣的可以去下载 App 去体验下：
+1. [官网](http://gankio.bmob.site/)
+2. [下载地址](https://fir.im/bfp5)
 
 ![gank.io.jpg](http://upload-images.jianshu.io/upload_images/1744889-58f639aae980d8c3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
