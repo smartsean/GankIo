@@ -76,7 +76,7 @@ android {
         }
         wandoujia {
             //manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
-            resValue "string", "app_name", "干货-豌豆荚"
+            resValue "string", "app_name", "干货"
         }
     }
 
