@@ -13,7 +13,7 @@ def releaseVersionName = '1.0'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "sean.com.gankio"
         minSdkVersion 15
@@ -21,6 +21,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true // 突破应用方法书65535的限制
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
+        flavorDimensions "versionCode"
     }
 
     /**
@@ -102,7 +103,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith(".apk")) {
                 def fileName = "${variant.productFlavors[0].name}" + "-" + new Date().format('yyyy-MM-dd') + "-" + variant.buildType.name + ".apk"
-                output.outputFile = new File(outputFile.parent, fileName);
+                output.outputFileName = new File(outputFile.parent, fileName)
             }
         }
     }
@@ -116,16 +117,16 @@ dependencies {
     })
     /** Glide加载图片*/
     /** view的注入框架*/
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:cardview-v7:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:support-v4:25.0.0'
+    compile 'com.android.support:cardview-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:design:25.0.0'
     compile 'com.zhj:syringe:1.0.0'
     compile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.alibaba:fastjson:1.2.28'
