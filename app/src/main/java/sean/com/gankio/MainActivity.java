@@ -402,13 +402,13 @@ public class MainActivity extends IndexActivity {
             searchType = AndroidFragment.ANDROID_KEY;
         } else if (type.equals(getResourcesString(R.string.ios))) {
             searchType = AndroidFragment.IOS_KEY;
-        } else if (type == getResourcesString(R.string.app_text)) {
+        } else if (type.equals(getResourcesString(R.string.app_text))) {
             searchType = AndroidFragment.APP_KEY;
-        } else if (type == getResourcesString(R.string.rest_video_text)) {
+        } else if (type.equals(getResourcesString(R.string.rest_video_text))) {
             searchType = AndroidFragment.REST_VIDEO_KEY;
-        } else if (type == getResourcesString(R.string.expand_text)) {
+        } else if (type.equals(getResourcesString(R.string.expand_text))) {
             searchType = AndroidFragment.EXPANSION_KEY;
-        } else if (type == getResourcesString(R.string.fore_end_text)) {
+        } else if (type.equals(getResourcesString(R.string.fore_end_text))) {
             searchType = AndroidFragment.FORE_END_KEY;
         }
         androidFragment = AndroidFragment.newInstance(searchType, content);
@@ -419,9 +419,6 @@ public class MainActivity extends IndexActivity {
     private String getResourcesString(int id) {
         return getResources().getString(id);
     }
-
-
-
 
 
 }
