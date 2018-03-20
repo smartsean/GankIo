@@ -27,9 +27,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.zhj.syringe.core.response.BaseHttpSubscriber;
+import com.zhj.syringe.core.response.HttpBean;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import sean.com.gankio.adapter.GankIoModel;
+import sean.com.gankio.common.CommonConfig;
+import sean.com.gankio.controller.GankController;
+import sean.com.gankio.http.Client;
+import sean.com.gankio.http.HttpHolder;
+import sean.com.gankio.http.service.IServiceType;
+import sean.com.gankio.http.service.RequestParam;
 import sean.com.gankio.ui.fragment.AndroidFragment;
 import sean.com.gankio.ui.fragment.WealFragment;
 import sean.com.gankio.utils.KeyBoardUtils;
